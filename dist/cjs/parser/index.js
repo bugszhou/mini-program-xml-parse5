@@ -1,14 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Parser = void 0;
 const index_js_1 = require("../tokenizer/index.js");
 const open_element_stack_js_1 = require("./open-element-stack.js");
 const formatting_element_list_js_1 = require("./formatting-element-list.js");
 const default_js_1 = require("../tree-adapters/default.js");
-const doctype = require("../common/doctype.js");
-const foreignContent = require("../common/foreign-content.js");
+const doctype = __importStar(require("../common/doctype.js"));
+const foreignContent = __importStar(require("../common/foreign-content.js"));
 const error_codes_js_1 = require("../common/error-codes.js");
-const unicode = require("../common/unicode.js");
+const unicode = __importStar(require("../common/unicode.js"));
 const html_js_1 = require("../common/html.js");
 const token_js_1 = require("../common/token.js");
 //Misc constants

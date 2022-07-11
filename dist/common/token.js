@@ -1,4 +1,7 @@
-export var TokenType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTokenAttr = exports.TokenType = void 0;
+var TokenType;
 (function (TokenType) {
     TokenType[TokenType["CHARACTER"] = 0] = "CHARACTER";
     TokenType[TokenType["NULL_CHARACTER"] = 1] = "NULL_CHARACTER";
@@ -9,8 +12,8 @@ export var TokenType;
     TokenType[TokenType["DOCTYPE"] = 6] = "DOCTYPE";
     TokenType[TokenType["EOF"] = 7] = "EOF";
     TokenType[TokenType["HIBERNATION"] = 8] = "HIBERNATION";
-})(TokenType = TokenType || (TokenType = {}));
-export function getTokenAttr(token, attrName) {
+})(TokenType = exports.TokenType || (exports.TokenType = {}));
+function getTokenAttr(token, attrName) {
     for (let i = token.attrs.length - 1; i >= 0; i--) {
         if (token.attrs[i].name === attrName) {
             return token.attrs[i].value;
@@ -18,4 +21,5 @@ export function getTokenAttr(token, attrName) {
     }
     return null;
 }
+exports.getTokenAttr = getTokenAttr;
 //# sourceMappingURL=token.js.map

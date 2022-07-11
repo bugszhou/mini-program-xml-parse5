@@ -1,13 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FormattingElementList = exports.EntryType = void 0;
 //Const
 const NOAH_ARK_CAPACITY = 3;
-export var EntryType;
+var EntryType;
 (function (EntryType) {
     EntryType[EntryType["Marker"] = 0] = "Marker";
     EntryType[EntryType["Element"] = 1] = "Element";
-})(EntryType = EntryType || (EntryType = {}));
+})(EntryType = exports.EntryType || (exports.EntryType = {}));
 const MARKER = { type: EntryType.Marker };
 //List of formatting elements
-export class FormattingElementList {
+class FormattingElementList {
     constructor(treeAdapter) {
         this.treeAdapter = treeAdapter;
         this.entries = [];
@@ -108,4 +111,5 @@ export class FormattingElementList {
         return this.entries.find((entry) => entry.type === EntryType.Element && entry.element === element);
     }
 }
+exports.FormattingElementList = FormattingElementList;
 //# sourceMappingURL=formatting-element-list.js.map

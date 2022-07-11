@@ -1,12 +1,15 @@
-import { DOCUMENT_MODE } from '../common/html.js';
-export var NodeType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultTreeAdapter = exports.NodeType = void 0;
+const html_js_1 = require("../common/html.js");
+var NodeType;
 (function (NodeType) {
     NodeType["Document"] = "#document";
     NodeType["DocumentFragment"] = "#document-fragment";
     NodeType["Comment"] = "#comment";
     NodeType["Text"] = "#text";
     NodeType["DocumentType"] = "#documentType";
-})(NodeType = NodeType || (NodeType = {}));
+})(NodeType = exports.NodeType || (exports.NodeType = {}));
 function createTextNode(value) {
     return {
         nodeName: NodeType.Text,
@@ -14,12 +17,12 @@ function createTextNode(value) {
         parentNode: null,
     };
 }
-export const defaultTreeAdapter = {
+exports.defaultTreeAdapter = {
     //Node construction
     createDocument() {
         return {
             nodeName: NodeType.Document,
-            mode: DOCUMENT_MODE.NO_QUIRKS,
+            mode: html_js_1.DOCUMENT_MODE.NO_QUIRKS,
             childNodes: [],
         };
     },
@@ -77,7 +80,7 @@ export const defaultTreeAdapter = {
                 systemId,
                 parentNode: null,
             };
-            defaultTreeAdapter.appendChild(document, node);
+            exports.defaultTreeAdapter.appendChild(document, node);
         }
     },
     setDocumentMode(document, mode) {
@@ -96,20 +99,20 @@ export const defaultTreeAdapter = {
     insertText(parentNode, text) {
         if (parentNode.childNodes.length > 0) {
             const prevNode = parentNode.childNodes[parentNode.childNodes.length - 1];
-            if (defaultTreeAdapter.isTextNode(prevNode)) {
+            if (exports.defaultTreeAdapter.isTextNode(prevNode)) {
                 prevNode.value += text;
                 return;
             }
         }
-        defaultTreeAdapter.appendChild(parentNode, createTextNode(text));
+        exports.defaultTreeAdapter.appendChild(parentNode, createTextNode(text));
     },
     insertTextBefore(parentNode, text, referenceNode) {
         const prevNode = parentNode.childNodes[parentNode.childNodes.indexOf(referenceNode) - 1];
-        if (prevNode && defaultTreeAdapter.isTextNode(prevNode)) {
+        if (prevNode && exports.defaultTreeAdapter.isTextNode(prevNode)) {
             prevNode.value += text;
         }
         else {
-            defaultTreeAdapter.insertBefore(parentNode, createTextNode(text), referenceNode);
+            exports.defaultTreeAdapter.insertBefore(parentNode, createTextNode(text), referenceNode);
         }
     },
     adoptAttributes(recipient, attrs) {
@@ -176,7 +179,7 @@ export const defaultTreeAdapter = {
         return node.sourceCodeLocation;
     },
     updateNodeSourceCodeLocation(node, endLocation) {
-        node.sourceCodeLocation = { ...node.sourceCodeLocation, ...endLocation };
+        node.sourceCodeLocation = Object.assign(Object.assign({}, node.sourceCodeLocation), endLocation);
     },
 };
 //# sourceMappingURL=default.js.map

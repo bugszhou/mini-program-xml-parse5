@@ -1,11 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isUndefinedCodePoint = exports.isControlCodePoint = exports.getSurrogatePairCodePoint = exports.isSurrogatePair = exports.isSurrogate = exports.SEQUENCES = exports.CODE_POINTS = exports.REPLACEMENT_CHARACTER = void 0;
 const UNDEFINED_CODE_POINTS = new Set([
     65534, 65535, 131070, 131071, 196606, 196607, 262142, 262143, 327678, 327679, 393214,
     393215, 458750, 458751, 524286, 524287, 589822, 589823, 655358, 655359, 720894,
     720895, 786430, 786431, 851966, 851967, 917502, 917503, 983038, 983039, 1048574,
     1048575, 1114110, 1114111,
 ]);
-export const REPLACEMENT_CHARACTER = '\uFFFD';
-export var CODE_POINTS;
+exports.REPLACEMENT_CHARACTER = '\uFFFD';
+var CODE_POINTS;
 (function (CODE_POINTS) {
     CODE_POINTS[CODE_POINTS["EOF"] = -1] = "EOF";
     CODE_POINTS[CODE_POINTS["NULL"] = 0] = "NULL";
@@ -39,8 +42,8 @@ export var CODE_POINTS;
     CODE_POINTS[CODE_POINTS["LATIN_SMALL_X"] = 120] = "LATIN_SMALL_X";
     CODE_POINTS[CODE_POINTS["LATIN_SMALL_Z"] = 122] = "LATIN_SMALL_Z";
     CODE_POINTS[CODE_POINTS["REPLACEMENT_CHARACTER"] = 65533] = "REPLACEMENT_CHARACTER";
-})(CODE_POINTS = CODE_POINTS || (CODE_POINTS = {}));
-export const SEQUENCES = {
+})(CODE_POINTS = exports.CODE_POINTS || (exports.CODE_POINTS = {}));
+exports.SEQUENCES = {
     DASH_DASH: '--',
     CDATA_START: '[CDATA[',
     DOCTYPE: 'doctype',
@@ -49,21 +52,26 @@ export const SEQUENCES = {
     SYSTEM: 'system',
 };
 //Surrogates
-export function isSurrogate(cp) {
+function isSurrogate(cp) {
     return cp >= 55296 && cp <= 57343;
 }
-export function isSurrogatePair(cp) {
+exports.isSurrogate = isSurrogate;
+function isSurrogatePair(cp) {
     return cp >= 56320 && cp <= 57343;
 }
-export function getSurrogatePairCodePoint(cp1, cp2) {
+exports.isSurrogatePair = isSurrogatePair;
+function getSurrogatePairCodePoint(cp1, cp2) {
     return (cp1 - 55296) * 1024 + 9216 + cp2;
 }
+exports.getSurrogatePairCodePoint = getSurrogatePairCodePoint;
 //NOTE: excluding NULL and ASCII whitespace
-export function isControlCodePoint(cp) {
+function isControlCodePoint(cp) {
     return ((cp !== 0x20 && cp !== 0x0a && cp !== 0x0d && cp !== 0x09 && cp !== 0x0c && cp >= 0x01 && cp <= 0x1f) ||
         (cp >= 0x7f && cp <= 0x9f));
 }
-export function isUndefinedCodePoint(cp) {
+exports.isControlCodePoint = isControlCodePoint;
+function isUndefinedCodePoint(cp) {
     return (cp >= 64976 && cp <= 65007) || UNDEFINED_CODE_POINTS.has(cp);
 }
+exports.isUndefinedCodePoint = isUndefinedCodePoint;
 //# sourceMappingURL=unicode.js.map

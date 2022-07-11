@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.hasUnescapedText = exports.isNumberedHeader = exports.SPECIAL_ELEMENTS = exports.getTagID = exports.TAG_ID = exports.TAG_NAMES = exports.DOCUMENT_MODE = exports.ATTRS = exports.NS = void 0;
 /** All valid namespaces in HTML. */
-export var NS;
+var NS;
 (function (NS) {
     NS["HTML"] = "http://www.w3.org/1999/xhtml";
     NS["MATHML"] = "http://www.w3.org/1998/Math/MathML";
@@ -7,8 +10,8 @@ export var NS;
     NS["XLINK"] = "http://www.w3.org/1999/xlink";
     NS["XML"] = "http://www.w3.org/XML/1998/namespace";
     NS["XMLNS"] = "http://www.w3.org/2000/xmlns/";
-})(NS = NS || (NS = {}));
-export var ATTRS;
+})(NS = exports.NS || (exports.NS = {}));
+var ATTRS;
 (function (ATTRS) {
     ATTRS["TYPE"] = "type";
     ATTRS["ACTION"] = "action";
@@ -18,19 +21,19 @@ export var ATTRS;
     ATTRS["COLOR"] = "color";
     ATTRS["FACE"] = "face";
     ATTRS["SIZE"] = "size";
-})(ATTRS = ATTRS || (ATTRS = {}));
+})(ATTRS = exports.ATTRS || (exports.ATTRS = {}));
 /**
  * The mode of the document.
  *
  * @see {@link https://dom.spec.whatwg.org/#concept-document-limited-quirks}
  */
-export var DOCUMENT_MODE;
+var DOCUMENT_MODE;
 (function (DOCUMENT_MODE) {
     DOCUMENT_MODE["NO_QUIRKS"] = "no-quirks";
     DOCUMENT_MODE["QUIRKS"] = "quirks";
     DOCUMENT_MODE["LIMITED_QUIRKS"] = "limited-quirks";
-})(DOCUMENT_MODE = DOCUMENT_MODE || (DOCUMENT_MODE = {}));
-export var TAG_NAMES;
+})(DOCUMENT_MODE = exports.DOCUMENT_MODE || (exports.DOCUMENT_MODE = {}));
+var TAG_NAMES;
 (function (TAG_NAMES) {
     TAG_NAMES["A"] = "a";
     TAG_NAMES["ADDRESS"] = "address";
@@ -154,13 +157,13 @@ export var TAG_NAMES;
     TAG_NAMES["VAR"] = "var";
     TAG_NAMES["WBR"] = "wbr";
     TAG_NAMES["XMP"] = "xmp";
-})(TAG_NAMES = TAG_NAMES || (TAG_NAMES = {}));
+})(TAG_NAMES = exports.TAG_NAMES || (exports.TAG_NAMES = {}));
 /**
  * Tag IDs are numeric IDs for known tag names.
  *
  * We use tag IDs to improve the performance of tag name comparisons.
  */
-export var TAG_ID;
+var TAG_ID;
 (function (TAG_ID) {
     TAG_ID[TAG_ID["UNKNOWN"] = 0] = "UNKNOWN";
     TAG_ID[TAG_ID["A"] = 1] = "A";
@@ -285,7 +288,7 @@ export var TAG_ID;
     TAG_ID[TAG_ID["VAR"] = 120] = "VAR";
     TAG_ID[TAG_ID["WBR"] = 121] = "WBR";
     TAG_ID[TAG_ID["XMP"] = 122] = "XMP";
-})(TAG_ID = TAG_ID || (TAG_ID = {}));
+})(TAG_ID = exports.TAG_ID || (exports.TAG_ID = {}));
 const TAG_NAME_TO_ID = new Map([
     [TAG_NAMES.A, TAG_ID.A],
     [TAG_NAMES.ADDRESS, TAG_ID.ADDRESS],
@@ -410,12 +413,13 @@ const TAG_NAME_TO_ID = new Map([
     [TAG_NAMES.WBR, TAG_ID.WBR],
     [TAG_NAMES.XMP, TAG_ID.XMP],
 ]);
-export function getTagID(tagName) {
+function getTagID(tagName) {
     var _a;
     return (_a = TAG_NAME_TO_ID.get(tagName)) !== null && _a !== void 0 ? _a : TAG_ID.UNKNOWN;
 }
+exports.getTagID = getTagID;
 const $ = TAG_ID;
-export const SPECIAL_ELEMENTS = {
+exports.SPECIAL_ELEMENTS = {
     [NS.HTML]: new Set([
         $.ADDRESS,
         $.APPLET,
@@ -505,9 +509,10 @@ export const SPECIAL_ELEMENTS = {
     [NS.XML]: new Set(),
     [NS.XMLNS]: new Set(),
 };
-export function isNumberedHeader(tn) {
+function isNumberedHeader(tn) {
     return tn === $.H1 || tn === $.H2 || tn === $.H3 || tn === $.H4 || tn === $.H5 || tn === $.H6;
 }
+exports.isNumberedHeader = isNumberedHeader;
 const UNESCAPED_TEXT = new Set([
     TAG_NAMES.STYLE,
     TAG_NAMES.SCRIPT,
@@ -517,7 +522,8 @@ const UNESCAPED_TEXT = new Set([
     TAG_NAMES.NOFRAMES,
     TAG_NAMES.PLAINTEXT,
 ]);
-export function hasUnescapedText(tn, scriptingEnabled) {
+function hasUnescapedText(tn, scriptingEnabled) {
     return UNESCAPED_TEXT.has(tn) || (scriptingEnabled && tn === TAG_NAMES.NOSCRIPT);
 }
+exports.hasUnescapedText = hasUnescapedText;
 //# sourceMappingURL=html.js.map

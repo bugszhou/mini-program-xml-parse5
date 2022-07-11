@@ -1,4 +1,7 @@
-import { TAG_ID as $, NS, ATTRS, getTagID } from './html.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isIntegrationPoint = exports.adjustTokenSVGTagName = exports.adjustTokenXMLAttrs = exports.adjustTokenSVGAttrs = exports.adjustTokenMathMLAttrs = exports.causesExit = exports.SVG_TAG_NAMES_ADJUSTMENT_MAP = void 0;
+const html_js_1 = require("./html.js");
 //MIME types
 const MIME_TYPES = {
     TEXT_HTML: 'text/html',
@@ -68,21 +71,21 @@ const SVG_ATTRS_ADJUSTMENT_MAP = new Map([
     'zoomAndPan',
 ].map((attr) => [attr.toLowerCase(), attr]));
 const XML_ATTRS_ADJUSTMENT_MAP = new Map([
-    ['xlink:actuate', { prefix: 'xlink', name: 'actuate', namespace: NS.XLINK }],
-    ['xlink:arcrole', { prefix: 'xlink', name: 'arcrole', namespace: NS.XLINK }],
-    ['xlink:href', { prefix: 'xlink', name: 'href', namespace: NS.XLINK }],
-    ['xlink:role', { prefix: 'xlink', name: 'role', namespace: NS.XLINK }],
-    ['xlink:show', { prefix: 'xlink', name: 'show', namespace: NS.XLINK }],
-    ['xlink:title', { prefix: 'xlink', name: 'title', namespace: NS.XLINK }],
-    ['xlink:type', { prefix: 'xlink', name: 'type', namespace: NS.XLINK }],
-    ['xml:base', { prefix: 'xml', name: 'base', namespace: NS.XML }],
-    ['xml:lang', { prefix: 'xml', name: 'lang', namespace: NS.XML }],
-    ['xml:space', { prefix: 'xml', name: 'space', namespace: NS.XML }],
-    ['xmlns', { prefix: '', name: 'xmlns', namespace: NS.XMLNS }],
-    ['xmlns:xlink', { prefix: 'xmlns', name: 'xlink', namespace: NS.XMLNS }],
+    ['xlink:actuate', { prefix: 'xlink', name: 'actuate', namespace: html_js_1.NS.XLINK }],
+    ['xlink:arcrole', { prefix: 'xlink', name: 'arcrole', namespace: html_js_1.NS.XLINK }],
+    ['xlink:href', { prefix: 'xlink', name: 'href', namespace: html_js_1.NS.XLINK }],
+    ['xlink:role', { prefix: 'xlink', name: 'role', namespace: html_js_1.NS.XLINK }],
+    ['xlink:show', { prefix: 'xlink', name: 'show', namespace: html_js_1.NS.XLINK }],
+    ['xlink:title', { prefix: 'xlink', name: 'title', namespace: html_js_1.NS.XLINK }],
+    ['xlink:type', { prefix: 'xlink', name: 'type', namespace: html_js_1.NS.XLINK }],
+    ['xml:base', { prefix: 'xml', name: 'base', namespace: html_js_1.NS.XML }],
+    ['xml:lang', { prefix: 'xml', name: 'lang', namespace: html_js_1.NS.XML }],
+    ['xml:space', { prefix: 'xml', name: 'space', namespace: html_js_1.NS.XML }],
+    ['xmlns', { prefix: '', name: 'xmlns', namespace: html_js_1.NS.XMLNS }],
+    ['xmlns:xlink', { prefix: 'xmlns', name: 'xlink', namespace: html_js_1.NS.XMLNS }],
 ]);
 //SVG tag names adjustment map
-export const SVG_TAG_NAMES_ADJUSTMENT_MAP = new Map([
+exports.SVG_TAG_NAMES_ADJUSTMENT_MAP = new Map([
     'altGlyph',
     'altGlyphDef',
     'altGlyphItem',
@@ -122,60 +125,61 @@ export const SVG_TAG_NAMES_ADJUSTMENT_MAP = new Map([
 ].map((tn) => [tn.toLowerCase(), tn]));
 //Tags that causes exit from foreign content
 const EXITS_FOREIGN_CONTENT = new Set([
-    $.B,
-    $.BIG,
-    $.BLOCKQUOTE,
-    $.BODY,
-    $.BR,
-    $.CENTER,
-    $.CODE,
-    $.DD,
-    $.DIV,
-    $.DL,
-    $.DT,
-    $.EM,
-    $.EMBED,
-    $.H1,
-    $.H2,
-    $.H3,
-    $.H4,
-    $.H5,
-    $.H6,
-    $.HEAD,
-    $.HR,
-    $.I,
-    $.IMG,
-    $.LI,
-    $.LISTING,
-    $.MENU,
-    $.META,
-    $.NOBR,
-    $.OL,
-    $.P,
-    $.PRE,
-    $.RUBY,
-    $.S,
-    $.SMALL,
-    $.SPAN,
-    $.STRONG,
-    $.STRIKE,
-    $.SUB,
-    $.SUP,
-    $.TABLE,
-    $.TT,
-    $.U,
-    $.UL,
-    $.VAR,
+    html_js_1.TAG_ID.B,
+    html_js_1.TAG_ID.BIG,
+    html_js_1.TAG_ID.BLOCKQUOTE,
+    html_js_1.TAG_ID.BODY,
+    html_js_1.TAG_ID.BR,
+    html_js_1.TAG_ID.CENTER,
+    html_js_1.TAG_ID.CODE,
+    html_js_1.TAG_ID.DD,
+    html_js_1.TAG_ID.DIV,
+    html_js_1.TAG_ID.DL,
+    html_js_1.TAG_ID.DT,
+    html_js_1.TAG_ID.EM,
+    html_js_1.TAG_ID.EMBED,
+    html_js_1.TAG_ID.H1,
+    html_js_1.TAG_ID.H2,
+    html_js_1.TAG_ID.H3,
+    html_js_1.TAG_ID.H4,
+    html_js_1.TAG_ID.H5,
+    html_js_1.TAG_ID.H6,
+    html_js_1.TAG_ID.HEAD,
+    html_js_1.TAG_ID.HR,
+    html_js_1.TAG_ID.I,
+    html_js_1.TAG_ID.IMG,
+    html_js_1.TAG_ID.LI,
+    html_js_1.TAG_ID.LISTING,
+    html_js_1.TAG_ID.MENU,
+    html_js_1.TAG_ID.META,
+    html_js_1.TAG_ID.NOBR,
+    html_js_1.TAG_ID.OL,
+    html_js_1.TAG_ID.P,
+    html_js_1.TAG_ID.PRE,
+    html_js_1.TAG_ID.RUBY,
+    html_js_1.TAG_ID.S,
+    html_js_1.TAG_ID.SMALL,
+    html_js_1.TAG_ID.SPAN,
+    html_js_1.TAG_ID.STRONG,
+    html_js_1.TAG_ID.STRIKE,
+    html_js_1.TAG_ID.SUB,
+    html_js_1.TAG_ID.SUP,
+    html_js_1.TAG_ID.TABLE,
+    html_js_1.TAG_ID.TT,
+    html_js_1.TAG_ID.U,
+    html_js_1.TAG_ID.UL,
+    html_js_1.TAG_ID.VAR,
 ]);
 //Check exit from foreign content
-export function causesExit(startTagToken) {
+function causesExit(startTagToken) {
     const tn = startTagToken.tagID;
-    const isFontWithAttrs = tn === $.FONT &&
-        startTagToken.attrs.some(({ name }) => name === ATTRS.COLOR || name === ATTRS.SIZE || name === ATTRS.FACE);
+    const isFontWithAttrs = tn === html_js_1.TAG_ID.FONT &&
+        startTagToken.attrs.some(({ name }) => name === html_js_1.ATTRS.COLOR || name === html_js_1.ATTRS.SIZE || name === html_js_1.ATTRS.FACE);
     return isFontWithAttrs || EXITS_FOREIGN_CONTENT.has(tn);
 }
+exports.causesExit = causesExit;
 //Token adjustments
-export function adjustTokenMathMLAttrs(token) {
+function adjustTokenMathMLAttrs(token) {
     for (let i = 0; i < token.attrs.length; i++) {
         if (token.attrs[i].name === DEFINITION_URL_ATTR) {
             token.attrs[i].name = ADJUSTED_DEFINITION_URL_ATTR;
@@ -183,7 +187,8 @@ export function adjustTokenMathMLAttrs(token) {
         }
     }
 }
-export function adjustTokenSVGAttrs(token) {
+exports.adjustTokenMathMLAttrs = adjustTokenMathMLAttrs;
+function adjustTokenSVGAttrs(token) {
     for (let i = 0; i < token.attrs.length; i++) {
         const adjustedAttrName = SVG_ATTRS_ADJUSTMENT_MAP.get(token.attrs[i].name);
         if (adjustedAttrName != null) {
@@ -191,7 +196,8 @@ export function adjustTokenSVGAttrs(token) {
         }
     }
 }
-export function adjustTokenXMLAttrs(token) {
+exports.adjustTokenSVGAttrs = adjustTokenSVGAttrs;
+function adjustTokenXMLAttrs(token) {
     for (let i = 0; i < token.attrs.length; i++) {
         const adjustedAttrEntry = XML_ATTRS_ADJUSTMENT_MAP.get(token.attrs[i].name);
         if (adjustedAttrEntry) {
@@ -201,30 +207,33 @@ export function adjustTokenXMLAttrs(token) {
         }
     }
 }
-export function adjustTokenSVGTagName(token) {
-    const adjustedTagName = SVG_TAG_NAMES_ADJUSTMENT_MAP.get(token.tagName);
+exports.adjustTokenXMLAttrs = adjustTokenXMLAttrs;
+function adjustTokenSVGTagName(token) {
+    const adjustedTagName = exports.SVG_TAG_NAMES_ADJUSTMENT_MAP.get(token.tagName);
     if (adjustedTagName != null) {
         token.tagName = adjustedTagName;
-        token.tagID = getTagID(token.tagName);
+        token.tagID = (0, html_js_1.getTagID)(token.tagName);
     }
 }
+exports.adjustTokenSVGTagName = adjustTokenSVGTagName;
 //Integration points
 function isMathMLTextIntegrationPoint(tn, ns) {
-    return ns === NS.MATHML && (tn === $.MI || tn === $.MO || tn === $.MN || tn === $.MS || tn === $.MTEXT);
+    return ns === html_js_1.NS.MATHML && (tn === html_js_1.TAG_ID.MI || tn === html_js_1.TAG_ID.MO || tn === html_js_1.TAG_ID.MN || tn === html_js_1.TAG_ID.MS || tn === html_js_1.TAG_ID.MTEXT);
 }
 function isHtmlIntegrationPoint(tn, ns, attrs) {
-    if (ns === NS.MATHML && tn === $.ANNOTATION_XML) {
+    if (ns === html_js_1.NS.MATHML && tn === html_js_1.TAG_ID.ANNOTATION_XML) {
         for (let i = 0; i < attrs.length; i++) {
-            if (attrs[i].name === ATTRS.ENCODING) {
+            if (attrs[i].name === html_js_1.ATTRS.ENCODING) {
                 const value = attrs[i].value.toLowerCase();
                 return value === MIME_TYPES.TEXT_HTML || value === MIME_TYPES.APPLICATION_XML;
             }
         }
     }
-    return ns === NS.SVG && (tn === $.FOREIGN_OBJECT || tn === $.DESC || tn === $.TITLE);
+    return ns === html_js_1.NS.SVG && (tn === html_js_1.TAG_ID.FOREIGN_OBJECT || tn === html_js_1.TAG_ID.DESC || tn === html_js_1.TAG_ID.TITLE);
 }
-export function isIntegrationPoint(tn, ns, attrs, foreignNS) {
-    return (((!foreignNS || foreignNS === NS.HTML) && isHtmlIntegrationPoint(tn, ns, attrs)) ||
-        ((!foreignNS || foreignNS === NS.MATHML) && isMathMLTextIntegrationPoint(tn, ns)));
+function isIntegrationPoint(tn, ns, attrs, foreignNS) {
+    return (((!foreignNS || foreignNS === html_js_1.NS.HTML) && isHtmlIntegrationPoint(tn, ns, attrs)) ||
+        ((!foreignNS || foreignNS === html_js_1.NS.MATHML) && isMathMLTextIntegrationPoint(tn, ns)));
 }
+exports.isIntegrationPoint = isIntegrationPoint;
 //# sourceMappingURL=foreign-content.js.map

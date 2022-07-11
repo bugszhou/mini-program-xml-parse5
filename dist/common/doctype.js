@@ -1,4 +1,7 @@
-import { DOCUMENT_MODE } from './html.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getDocumentMode = exports.isConforming = void 0;
+const html_js_1 = require("./html.js");
 //Const
 const VALID_DOCTYPE_NAME = 'html';
 const VALID_SYSTEM_ID = 'about:legacy-compat';
@@ -81,35 +84,37 @@ function hasPrefix(publicId, prefixes) {
     return prefixes.some((prefix) => publicId.startsWith(prefix));
 }
 //API
-export function isConforming(token) {
+function isConforming(token) {
     return (token.name === VALID_DOCTYPE_NAME &&
         token.publicId === null &&
         (token.systemId === null || token.systemId === VALID_SYSTEM_ID));
 }
-export function getDocumentMode(token) {
+exports.isConforming = isConforming;
+function getDocumentMode(token) {
     if (token.name !== VALID_DOCTYPE_NAME) {
-        return DOCUMENT_MODE.QUIRKS;
+        return html_js_1.DOCUMENT_MODE.QUIRKS;
     }
     const { systemId } = token;
     if (systemId && systemId.toLowerCase() === QUIRKS_MODE_SYSTEM_ID) {
-        return DOCUMENT_MODE.QUIRKS;
+        return html_js_1.DOCUMENT_MODE.QUIRKS;
     }
     let { publicId } = token;
     if (publicId !== null) {
         publicId = publicId.toLowerCase();
         if (QUIRKS_MODE_PUBLIC_IDS.has(publicId)) {
-            return DOCUMENT_MODE.QUIRKS;
+            return html_js_1.DOCUMENT_MODE.QUIRKS;
         }
         let prefixes = systemId === null ? QUIRKS_MODE_NO_SYSTEM_ID_PUBLIC_ID_PREFIXES : QUIRKS_MODE_PUBLIC_ID_PREFIXES;
         if (hasPrefix(publicId, prefixes)) {
-            return DOCUMENT_MODE.QUIRKS;
+            return html_js_1.DOCUMENT_MODE.QUIRKS;
         }
         prefixes =
             systemId === null ? LIMITED_QUIRKS_PUBLIC_ID_PREFIXES : LIMITED_QUIRKS_WITH_SYSTEM_ID_PUBLIC_ID_PREFIXES;
         if (hasPrefix(publicId, prefixes)) {
-            return DOCUMENT_MODE.LIMITED_QUIRKS;
+            return html_js_1.DOCUMENT_MODE.LIMITED_QUIRKS;
         }
     }
-    return DOCUMENT_MODE.NO_QUIRKS;
+    return html_js_1.DOCUMENT_MODE.NO_QUIRKS;
 }
+exports.getDocumentMode = getDocumentMode;
 //# sourceMappingURL=doctype.js.map

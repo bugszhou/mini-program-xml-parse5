@@ -1,4 +1,7 @@
-export var ERR;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ERR = void 0;
+var ERR;
 (function (ERR) {
     ERR["controlCharacterInInputStream"] = "control-character-in-input-stream";
     ERR["noncharacterInInputStream"] = "noncharacter-in-input-stream";
@@ -60,5 +63,5 @@ export var ERR;
     ERR["misplacedStartTagForHeadElement"] = "misplaced-start-tag-for-head-element";
     ERR["nestedNoscriptInHead"] = "nested-noscript-in-head";
     ERR["eofInElementThatCanContainOnlyText"] = "eof-in-element-that-can-contain-only-text";
-})(ERR = ERR || (ERR = {}));
+})(ERR = exports.ERR || (exports.ERR = {}));
 //# sourceMappingURL=error-codes.js.map

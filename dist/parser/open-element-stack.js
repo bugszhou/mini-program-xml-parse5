@@ -1,44 +1,47 @@
-import { TAG_ID as $, NS, isNumberedHeader } from '../common/html.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OpenElementStack = void 0;
+const html_js_1 = require("../common/html.js");
 //Element utils
-const IMPLICIT_END_TAG_REQUIRED = new Set([$.DD, $.DT, $.LI, $.OPTGROUP, $.OPTION, $.P, $.RB, $.RP, $.RT, $.RTC]);
+const IMPLICIT_END_TAG_REQUIRED = new Set([html_js_1.TAG_ID.DD, html_js_1.TAG_ID.DT, html_js_1.TAG_ID.LI, html_js_1.TAG_ID.OPTGROUP, html_js_1.TAG_ID.OPTION, html_js_1.TAG_ID.P, html_js_1.TAG_ID.RB, html_js_1.TAG_ID.RP, html_js_1.TAG_ID.RT, html_js_1.TAG_ID.RTC]);
 const IMPLICIT_END_TAG_REQUIRED_THOROUGHLY = new Set([
     ...IMPLICIT_END_TAG_REQUIRED,
-    $.CAPTION,
-    $.COLGROUP,
-    $.TBODY,
-    $.TD,
-    $.TFOOT,
-    $.TH,
-    $.THEAD,
-    $.TR,
+    html_js_1.TAG_ID.CAPTION,
+    html_js_1.TAG_ID.COLGROUP,
+    html_js_1.TAG_ID.TBODY,
+    html_js_1.TAG_ID.TD,
+    html_js_1.TAG_ID.TFOOT,
+    html_js_1.TAG_ID.TH,
+    html_js_1.TAG_ID.THEAD,
+    html_js_1.TAG_ID.TR,
 ]);
 const SCOPING_ELEMENT_NS = new Map([
-    [$.APPLET, NS.HTML],
-    [$.CAPTION, NS.HTML],
-    [$.HTML, NS.HTML],
-    [$.MARQUEE, NS.HTML],
-    [$.OBJECT, NS.HTML],
-    [$.TABLE, NS.HTML],
-    [$.TD, NS.HTML],
-    [$.TEMPLATE, NS.HTML],
-    [$.TH, NS.HTML],
-    [$.ANNOTATION_XML, NS.MATHML],
-    [$.MI, NS.MATHML],
-    [$.MN, NS.MATHML],
-    [$.MO, NS.MATHML],
-    [$.MS, NS.MATHML],
-    [$.MTEXT, NS.MATHML],
-    [$.DESC, NS.SVG],
-    [$.FOREIGN_OBJECT, NS.SVG],
-    [$.TITLE, NS.SVG],
+    [html_js_1.TAG_ID.APPLET, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.CAPTION, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.HTML, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.MARQUEE, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.OBJECT, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.TABLE, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.TD, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.TEMPLATE, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.TH, html_js_1.NS.HTML],
+    [html_js_1.TAG_ID.ANNOTATION_XML, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.MI, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.MN, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.MO, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.MS, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.MTEXT, html_js_1.NS.MATHML],
+    [html_js_1.TAG_ID.DESC, html_js_1.NS.SVG],
+    [html_js_1.TAG_ID.FOREIGN_OBJECT, html_js_1.NS.SVG],
+    [html_js_1.TAG_ID.TITLE, html_js_1.NS.SVG],
 ]);
-const NAMED_HEADERS = [$.H1, $.H2, $.H3, $.H4, $.H5, $.H6];
-const TABLE_ROW_CONTEXT = [$.TR, $.TEMPLATE, $.HTML];
-const TABLE_BODY_CONTEXT = [$.TBODY, $.TFOOT, $.THEAD, $.TEMPLATE, $.HTML];
-const TABLE_CONTEXT = [$.TABLE, $.TEMPLATE, $.HTML];
-const TABLE_CELLS = [$.TD, $.TH];
+const NAMED_HEADERS = [html_js_1.TAG_ID.H1, html_js_1.TAG_ID.H2, html_js_1.TAG_ID.H3, html_js_1.TAG_ID.H4, html_js_1.TAG_ID.H5, html_js_1.TAG_ID.H6];
+const TABLE_ROW_CONTEXT = [html_js_1.TAG_ID.TR, html_js_1.TAG_ID.TEMPLATE, html_js_1.TAG_ID.HTML];
+const TABLE_BODY_CONTEXT = [html_js_1.TAG_ID.TBODY, html_js_1.TAG_ID.TFOOT, html_js_1.TAG_ID.THEAD, html_js_1.TAG_ID.TEMPLATE, html_js_1.TAG_ID.HTML];
+const TABLE_CONTEXT = [html_js_1.TAG_ID.TABLE, html_js_1.TAG_ID.TEMPLATE, html_js_1.TAG_ID.HTML];
+const TABLE_CELLS = [html_js_1.TAG_ID.TD, html_js_1.TAG_ID.TH];
 //Stack of open elements
-export class OpenElementStack {
+class OpenElementStack {
     constructor(document, treeAdapter, handler) {
         this.treeAdapter = treeAdapter;
         this.handler = handler;
@@ -46,7 +49,7 @@ export class OpenElementStack {
         this.tagIDs = [];
         this.stackTop = -1;
         this.tmplCount = 0;
-        this.currentTagId = $.UNKNOWN;
+        this.currentTagId = html_js_1.TAG_ID.UNKNOWN;
         this.current = document;
     }
     get currentTmplContentOrNode() {
@@ -58,7 +61,7 @@ export class OpenElementStack {
     }
     //Update current element
     _isInTemplate() {
-        return this.currentTagId === $.TEMPLATE && this.treeAdapter.getNamespaceURI(this.current) === NS.HTML;
+        return this.currentTagId === html_js_1.TAG_ID.TEMPLATE && this.treeAdapter.getNamespaceURI(this.current) === html_js_1.NS.HTML;
     }
     _updateCurrentElement() {
         this.current = this.items[this.stackTop];
@@ -106,7 +109,7 @@ export class OpenElementStack {
         let targetIdx = this.stackTop + 1;
         do {
             targetIdx = this.tagIDs.lastIndexOf(tagName, targetIdx - 1);
-        } while (targetIdx > 0 && this.treeAdapter.getNamespaceURI(this.items[targetIdx]) !== NS.HTML);
+        } while (targetIdx > 0 && this.treeAdapter.getNamespaceURI(this.items[targetIdx]) !== html_js_1.NS.HTML);
         this.shortenToLength(targetIdx < 0 ? 0 : targetIdx);
     }
     shortenToLength(idx) {
@@ -129,10 +132,10 @@ export class OpenElementStack {
         this.shortenToLength(idx < 0 ? 0 : idx);
     }
     popUntilNumberedHeaderPopped() {
-        this.popUntilPopped(NAMED_HEADERS, NS.HTML);
+        this.popUntilPopped(NAMED_HEADERS, html_js_1.NS.HTML);
     }
     popUntilTableCellPopped() {
-        this.popUntilPopped(TABLE_CELLS, NS.HTML);
+        this.popUntilPopped(TABLE_CELLS, html_js_1.NS.HTML);
     }
     popAllUpToHtmlElement() {
         //NOTE: here we assume that the root <html> element is always first in the open element stack, so
@@ -153,13 +156,13 @@ export class OpenElementStack {
         this.shortenToLength(idx + 1);
     }
     clearBackToTableContext() {
-        this.clearBackTo(TABLE_CONTEXT, NS.HTML);
+        this.clearBackTo(TABLE_CONTEXT, html_js_1.NS.HTML);
     }
     clearBackToTableBodyContext() {
-        this.clearBackTo(TABLE_BODY_CONTEXT, NS.HTML);
+        this.clearBackTo(TABLE_BODY_CONTEXT, html_js_1.NS.HTML);
     }
     clearBackToTableRowContext() {
-        this.clearBackTo(TABLE_ROW_CONTEXT, NS.HTML);
+        this.clearBackTo(TABLE_ROW_CONTEXT, html_js_1.NS.HTML);
     }
     remove(element) {
         const idx = this._indexOf(element);
@@ -179,7 +182,7 @@ export class OpenElementStack {
     //Search
     tryPeekProperlyNestedBodyElement() {
         //Properly nested <body> element (should be second element in stack).
-        return this.stackTop >= 1 && this.tagIDs[1] === $.BODY ? this.items[1] : null;
+        return this.stackTop >= 1 && this.tagIDs[1] === html_js_1.TAG_ID.BODY ? this.items[1] : null;
     }
     contains(element) {
         return this._indexOf(element) > -1;
@@ -189,14 +192,14 @@ export class OpenElementStack {
         return elementIdx >= 0 ? this.items[elementIdx] : null;
     }
     isRootHtmlElementCurrent() {
-        return this.stackTop === 0 && this.tagIDs[0] === $.HTML;
+        return this.stackTop === 0 && this.tagIDs[0] === html_js_1.TAG_ID.HTML;
     }
     //Element in scope
     hasInScope(tagName) {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (tn === tagName && ns === NS.HTML) {
+            if (tn === tagName && ns === html_js_1.NS.HTML) {
                 return true;
             }
             if (SCOPING_ELEMENT_NS.get(tn) === ns) {
@@ -209,7 +212,7 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (isNumberedHeader(tn) && ns === NS.HTML) {
+            if ((0, html_js_1.isNumberedHeader)(tn) && ns === html_js_1.NS.HTML) {
                 return true;
             }
             if (SCOPING_ELEMENT_NS.get(tn) === ns) {
@@ -222,10 +225,10 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (tn === tagName && ns === NS.HTML) {
+            if (tn === tagName && ns === html_js_1.NS.HTML) {
                 return true;
             }
-            if (((tn === $.UL || tn === $.OL) && ns === NS.HTML) || SCOPING_ELEMENT_NS.get(tn) === ns) {
+            if (((tn === html_js_1.TAG_ID.UL || tn === html_js_1.TAG_ID.OL) && ns === html_js_1.NS.HTML) || SCOPING_ELEMENT_NS.get(tn) === ns) {
                 return false;
             }
         }
@@ -235,10 +238,10 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (tn === tagName && ns === NS.HTML) {
+            if (tn === tagName && ns === html_js_1.NS.HTML) {
                 return true;
             }
-            if ((tn === $.BUTTON && ns === NS.HTML) || SCOPING_ELEMENT_NS.get(tn) === ns) {
+            if ((tn === html_js_1.TAG_ID.BUTTON && ns === html_js_1.NS.HTML) || SCOPING_ELEMENT_NS.get(tn) === ns) {
                 return false;
             }
         }
@@ -248,13 +251,13 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (ns !== NS.HTML) {
+            if (ns !== html_js_1.NS.HTML) {
                 continue;
             }
             if (tn === tagName) {
                 return true;
             }
-            if (tn === $.TABLE || tn === $.TEMPLATE || tn === $.HTML) {
+            if (tn === html_js_1.TAG_ID.TABLE || tn === html_js_1.TAG_ID.TEMPLATE || tn === html_js_1.TAG_ID.HTML) {
                 return false;
             }
         }
@@ -264,13 +267,13 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (ns !== NS.HTML) {
+            if (ns !== html_js_1.NS.HTML) {
                 continue;
             }
-            if (tn === $.TBODY || tn === $.THEAD || tn === $.TFOOT) {
+            if (tn === html_js_1.TAG_ID.TBODY || tn === html_js_1.TAG_ID.THEAD || tn === html_js_1.TAG_ID.TFOOT) {
                 return true;
             }
-            if (tn === $.TABLE || tn === $.HTML) {
+            if (tn === html_js_1.TAG_ID.TABLE || tn === html_js_1.TAG_ID.HTML) {
                 return false;
             }
         }
@@ -280,13 +283,13 @@ export class OpenElementStack {
         for (let i = this.stackTop; i >= 0; i--) {
             const tn = this.tagIDs[i];
             const ns = this.treeAdapter.getNamespaceURI(this.items[i]);
-            if (ns !== NS.HTML) {
+            if (ns !== html_js_1.NS.HTML) {
                 continue;
             }
             if (tn === tagName) {
                 return true;
             }
-            if (tn !== $.OPTION && tn !== $.OPTGROUP) {
+            if (tn !== html_js_1.TAG_ID.OPTION && tn !== html_js_1.TAG_ID.OPTGROUP) {
                 return false;
             }
         }
@@ -309,4 +312,5 @@ export class OpenElementStack {
         }
     }
 }
+exports.OpenElementStack = OpenElementStack;
 //# sourceMappingURL=open-element-stack.js.map

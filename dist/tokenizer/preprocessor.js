@@ -1,11 +1,14 @@
-import { CODE_POINTS as $, getSurrogatePairCodePoint, isControlCodePoint, isSurrogate, isSurrogatePair, isUndefinedCodePoint, } from '../common/unicode.js';
-import { ERR } from '../common/error-codes.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Preprocessor = void 0;
+const unicode_js_1 = require("../common/unicode.js");
+const error_codes_js_1 = require("../common/error-codes.js");
 //Const
 const DEFAULT_BUFFER_WATERLINE = 1 << 16;
 //Preprocessor
 //NOTE: HTML input preprocessing
 //(see: http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#preprocessing-the-input-stream)
-export class Preprocessor {
+class Preprocessor {
     constructor(handler) {
         this.handler = handler;
         this.html = '';
@@ -57,21 +60,21 @@ export class Preprocessor {
         //NOTE: try to peek a surrogate pair
         if (this.pos !== this.html.length - 1) {
             const nextCp = this.html.charCodeAt(this.pos + 1);
-            if (isSurrogatePair(nextCp)) {
+            if ((0, unicode_js_1.isSurrogatePair)(nextCp)) {
                 //NOTE: we have a surrogate pair. Peek pair character and recalculate code point.
                 this.pos++;
                 //NOTE: add a gap that should be avoided during retreat
                 this._addGap();
-                return getSurrogatePairCodePoint(cp, nextCp);
+                return (0, unicode_js_1.getSurrogatePairCodePoint)(cp, nextCp);
             }
         }
         //NOTE: we are at the end of a chunk, therefore we can't infer the surrogate pair yet.
         else if (!this.lastChunkWritten) {
             this.endOfChunkHit = true;
-            return $.EOF;
+            return unicode_js_1.CODE_POINTS.EOF;
         }
         //NOTE: isolated surrogate
-        this._err(ERR.surrogateInInputStream);
+        this._err(error_codes_js_1.ERR.surrogateInInputStream);
         return cp;
     }
     willDropParsedChunk() {
@@ -122,7 +125,7 @@ export class Preprocessor {
         const pos = this.pos + offset;
         if (pos >= this.html.length) {
             this.endOfChunkHit = !this.lastChunkWritten;
-            return $.EOF;
+            return unicode_js_1.CODE_POINTS.EOF;
         }
         return this.html.charCodeAt(pos);
     }
@@ -136,18 +139,18 @@ export class Preprocessor {
         }
         if (this.pos >= this.html.length) {
             this.endOfChunkHit = !this.lastChunkWritten;
-            return $.EOF;
+            return unicode_js_1.CODE_POINTS.EOF;
         }
         let cp = this.html.charCodeAt(this.pos);
         //NOTE: all U+000D CARRIAGE RETURN (CR) characters must be converted to U+000A LINE FEED (LF) characters
-        if (cp === $.CARRIAGE_RETURN) {
+        if (cp === unicode_js_1.CODE_POINTS.CARRIAGE_RETURN) {
             this.isEol = true;
             this.skipNextNewLine = true;
-            return $.LINE_FEED;
+            return unicode_js_1.CODE_POINTS.LINE_FEED;
         }
         //NOTE: any U+000A LINE FEED (LF) characters that immediately follow a U+000D CARRIAGE RETURN (CR) character
         //must be ignored.
-        if (cp === $.LINE_FEED) {
+        if (cp === unicode_js_1.CODE_POINTS.LINE_FEED) {
             this.isEol = true;
             if (this.skipNextNewLine) {
                 // `line` will be bumped again in the recursive call.
@@ -158,7 +161,7 @@ export class Preprocessor {
             }
         }
         this.skipNextNewLine = false;
-        if (isSurrogate(cp)) {
+        if ((0, unicode_js_1.isSurrogate)(cp)) {
             cp = this._processSurrogate(cp);
         }
         //OPTIMIZATION: first check if code point is in the common allowed
@@ -166,8 +169,8 @@ export class Preprocessor {
         //before going into detailed performance cost validation.
         const isCommonValidRange = this.handler.onParseError === null ||
             (cp > 0x1f && cp < 0x7f) ||
-            cp === $.LINE_FEED ||
-            cp === $.CARRIAGE_RETURN ||
+            cp === unicode_js_1.CODE_POINTS.LINE_FEED ||
+            cp === unicode_js_1.CODE_POINTS.CARRIAGE_RETURN ||
             (cp > 0x9f && cp < 64976);
         if (!isCommonValidRange) {
             this._checkForProblematicCharacters(cp);
@@ -175,11 +178,11 @@ export class Preprocessor {
         return cp;
     }
     _checkForProblematicCharacters(cp) {
-        if (isControlCodePoint(cp)) {
-            this._err(ERR.controlCharacterInInputStream);
+        if ((0, unicode_js_1.isControlCodePoint)(cp)) {
+            this._err(error_codes_js_1.ERR.controlCharacterInInputStream);
         }
-        else if (isUndefinedCodePoint(cp)) {
-            this._err(ERR.noncharacterInInputStream);
+        else if ((0, unicode_js_1.isUndefinedCodePoint)(cp)) {
+            this._err(error_codes_js_1.ERR.noncharacterInInputStream);
         }
     }
     retreat(count) {
@@ -191,4 +194,5 @@ export class Preprocessor {
         this.isEol = false;
     }
 }
+exports.Preprocessor = Preprocessor;
 //# sourceMappingURL=preprocessor.js.map
