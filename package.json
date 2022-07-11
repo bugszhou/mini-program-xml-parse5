@@ -2,7 +2,7 @@
     "name": "mini-program-xml-parser",
     "type": "module",
     "description": "mini program xml parser and serializer.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "homepage": "https://github.com/bugszhou/mini-program-xml-parse5",
     "dependencies": {
         "entities": "^4.3.1"
