@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.serializeOuter = exports.serialize = void 0;
 const html_js_1 = require("../common/html.js");
-const escape_js_1 = require("entities/lib/escape.js");
 const default_js_1 = require("../tree-adapters/default.js");
 // Sets
 const VOID_ELEMENTS = new Set([
@@ -30,7 +29,10 @@ function isVoidElement(node, options) {
         options.treeAdapter.getNamespaceURI(node) === html_js_1.NS.HTML &&
         VOID_ELEMENTS.has(options.treeAdapter.getTagName(node)));
 }
-const defaultOpts = { treeAdapter: default_js_1.defaultTreeAdapter, scriptingEnabled: true };
+const defaultOpts = {
+    treeAdapter: default_js_1.defaultTreeAdapter,
+    scriptingEnabled: true,
+};
 /**
  * Serializes an AST node to an HTML string.
  *
@@ -56,7 +58,7 @@ const defaultOpts = { treeAdapter: default_js_1.defaultTreeAdapter, scriptingEna
 function serialize(node, options) {
     const opts = Object.assign(Object.assign({}, defaultOpts), options);
     if (isVoidElement(node, opts)) {
-        return '';
+        return "";
     }
     return serializeChildNodes(node, opts);
 }
@@ -86,7 +88,7 @@ function serializeOuter(node, options) {
 }
 exports.serializeOuter = serializeOuter;
 function serializeChildNodes(parentNode, options) {
-    let html = '';
+    let html = "";
     // Get container of the child nodes
     const container = options.treeAdapter.isElementNode(parentNode) &&
         options.treeAdapter.getTagName(parentNode) === html_js_1.TAG_NAMES.TEMPLATE &&
@@ -115,16 +117,18 @@ function serializeNode(node, options) {
         return serializeDocumentTypeNode(node, options);
     }
     // Return an empty string for unknown nodes
-    return '';
+    return "";
 }
 function serializeElement(node, options) {
     const tn = options.treeAdapter.getTagName(node);
-    return `<${tn}${serializeAttributes(node, options)}>${isVoidElement(node, options) ? '' : `${serializeChildNodes(node, options)}</${tn}>`}`;
+    return `<${tn}${serializeAttributes(node, options)}>${isVoidElement(node, options)
+        ? ""
+        : `${serializeChildNodes(node, options)}</${tn}>`}`;
 }
 function serializeAttributes(node, { treeAdapter }) {
-    let html = '';
+    let html = "";
     for (const attr of treeAdapter.getAttrList(node)) {
-        html += ' ';
+        html += " ";
         if (!attr.namespace) {
             html += attr.name;
         }
@@ -135,8 +139,8 @@ function serializeAttributes(node, { treeAdapter }) {
                     break;
                 }
                 case html_js_1.NS.XMLNS: {
-                    if (attr.name !== 'xmlns') {
-                        html += 'xmlns:';
+                    if (attr.name !== "xmlns") {
+                        html += "xmlns:";
                     }
                     html += attr.name;
                     break;
@@ -149,20 +153,14 @@ function serializeAttributes(node, { treeAdapter }) {
                     html += `${attr.prefix}:${attr.name}`;
                 }
             }
-        html += `="${(0, escape_js_1.escapeAttribute)(attr.value)}"`;
+        html += `="${attr.value}"`;
     }
     return html;
 }
 function serializeTextNode(node, options) {
     const { treeAdapter } = options;
     const content = treeAdapter.getTextNodeContent(node);
-    const parent = treeAdapter.getParentNode(node);
-    const parentTn = parent && treeAdapter.isElementNode(parent) && treeAdapter.getTagName(parent);
-    return parentTn &&
-        treeAdapter.getNamespaceURI(parent) === html_js_1.NS.HTML &&
-        (0, html_js_1.hasUnescapedText)(parentTn, options.scriptingEnabled)
-        ? content
-        : (0, escape_js_1.escapeText)(content);
+    return content;
 }
 function serializeCommentNode(node, { treeAdapter }) {
     return `<!--${treeAdapter.getCommentNodeContent(node)}-->`;

@@ -1232,7 +1232,7 @@ export class Tokenizer {
                 break;
             }
             default: {
-                token.tagName += String.fromCodePoint(isAsciiUpper(cp) ? toAsciiLower(cp) : cp);
+                token.tagName += String.fromCodePoint(cp);
             }
         }
     }
