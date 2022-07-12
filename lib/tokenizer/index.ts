@@ -1232,7 +1232,11 @@ export class Tokenizer {
                 break;
             }
             default: {
-                token.tagName += String.fromCodePoint(cp);
+                if (process.env.isLowerCaseTag) {
+                    token.tagName += String.fromCodePoint(isAsciiUpper(cp) ? toAsciiLower(cp) : cp);
+                } else {
+                    token.tagName += String.fromCodePoint(cp);
+                }
             }
         }
     }
