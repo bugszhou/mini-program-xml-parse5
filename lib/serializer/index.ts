@@ -28,6 +28,8 @@ const VOID_ELEMENTS = new Set<string>([
   $.SOURCE,
   $.TRACK,
   $.WBR,
+  "img",
+  "import",
 ]);
 
 function isVoidElement<T extends TreeAdapterTypeMap>(
@@ -191,6 +193,10 @@ function serializeElement<T extends TreeAdapterTypeMap>(
   options: InternalOptions<T>,
 ): string {
   const tn = options.treeAdapter.getTagName?.(node);
+
+  if ((node as any).selfClosing) {
+    return `<${tn}${serializeAttributes(node, options)}/>${serializeChildNodes(node, options)}`;
+  }
 
   return `<${tn}${serializeAttributes(node, options)}>${
     isVoidElement(node, options)

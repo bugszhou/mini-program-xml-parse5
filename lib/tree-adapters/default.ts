@@ -48,6 +48,7 @@ export interface Element {
     parentNode: ParentNode | null;
     /** The node's children. */
     childNodes: ChildNode[];
+    selfClosing: boolean;
 }
 
 export interface CommentNode {
@@ -135,7 +136,7 @@ export const defaultTreeAdapter: TreeAdapter<DefaultTreeAdapterMap> = {
         };
     },
 
-    createElement(tagName: string, namespaceURI: NS, attrs: Attribute[]): Element {
+    createElement(tagName: string, namespaceURI: NS, attrs: Attribute[], token): Element {
         return {
             nodeName: tagName,
             tagName,
@@ -143,6 +144,7 @@ export const defaultTreeAdapter: TreeAdapter<DefaultTreeAdapterMap> = {
             namespaceURI,
             childNodes: [],
             parentNode: null,
+            selfClosing: token?.selfClosing ?? false,
         };
     },
 

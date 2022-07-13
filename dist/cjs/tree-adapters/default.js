@@ -32,7 +32,8 @@ exports.defaultTreeAdapter = {
             childNodes: [],
         };
     },
-    createElement(tagName, namespaceURI, attrs) {
+    createElement(tagName, namespaceURI, attrs, token) {
+        var _a;
         return {
             nodeName: tagName,
             tagName,
@@ -40,6 +41,7 @@ exports.defaultTreeAdapter = {
             namespaceURI,
             childNodes: [],
             parentNode: null,
+            selfClosing: (_a = token === null || token === void 0 ? void 0 : token.selfClosing) !== null && _a !== void 0 ? _a : false,
         };
     },
     createCommentNode(data) {

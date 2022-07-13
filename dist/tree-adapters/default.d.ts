@@ -44,6 +44,7 @@ export interface Element {
     parentNode: ParentNode | null;
     /** The node's children. */
     childNodes: ChildNode[];
+    selfClosing: boolean;
 }
 export interface CommentNode {
     /** The name of the node. */

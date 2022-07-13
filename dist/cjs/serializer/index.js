@@ -23,6 +23,8 @@ const VOID_ELEMENTS = new Set([
     html_js_1.TAG_NAMES.SOURCE,
     html_js_1.TAG_NAMES.TRACK,
     html_js_1.TAG_NAMES.WBR,
+    "img",
+    "import",
 ]);
 function isVoidElement(node, options) {
     return (options.treeAdapter.isElementNode(node) &&
@@ -127,6 +129,9 @@ function serializeNode(node, options) {
 function serializeElement(node, options) {
     var _a, _b;
     const tn = (_b = (_a = options.treeAdapter).getTagName) === null || _b === void 0 ? void 0 : _b.call(_a, node);
+    if (node.selfClosing) {
+        return `<${tn}${serializeAttributes(node, options)}/>${serializeChildNodes(node, options)}`;
+    }
     return `<${tn}${serializeAttributes(node, options)}>${isVoidElement(node, options)
         ? ""
         : `${serializeChildNodes(node, options)}</${tn}>`}`;

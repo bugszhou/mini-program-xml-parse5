@@ -283,11 +283,11 @@ class Parser {
         }
     }
     _appendElement(token, namespaceURI) {
-        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs);
+        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs, token);
         this._attachElementToTree(element, token.location);
     }
     _insertElement(token, namespaceURI) {
-        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs);
+        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs, token);
         this._attachElementToTree(element, token.location);
         this.openElements.push(element, token.tagID);
     }
@@ -297,7 +297,7 @@ class Parser {
         this.openElements.push(element, tagID);
     }
     _insertTemplate(token) {
-        const tmpl = this.treeAdapter.createElement(token.tagName, html_js_1.NS.HTML, token.attrs);
+        const tmpl = this.treeAdapter.createElement(token.tagName, html_js_1.NS.HTML, token.attrs, token);
         const content = this.treeAdapter.createDocumentFragment();
         this.treeAdapter.setTemplateContent(tmpl, content);
         this._attachElementToTree(tmpl, token.location);
@@ -1096,7 +1096,7 @@ function aaInnerLoop(p, furthestBlock, formattingElement) {
 //Step 13.7 of the algorithm
 function aaRecreateElementFromEntry(p, elementEntry) {
     const ns = p.treeAdapter.getNamespaceURI(elementEntry.element);
-    const newElement = p.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs);
+    const newElement = p.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs, elementEntry.token);
     p.openElements.replace(elementEntry.element, newElement);
     elementEntry.element = newElement;
     return newElement;
@@ -1120,7 +1120,7 @@ function aaInsertLastNodeInCommonAncestor(p, commonAncestor, lastElement) {
 function aaReplaceFormattingElement(p, furthestBlock, formattingElementEntry) {
     const ns = p.treeAdapter.getNamespaceURI(formattingElementEntry.element);
     const { token } = formattingElementEntry;
-    const newElement = p.treeAdapter.createElement(token.tagName, ns, token.attrs);
+    const newElement = p.treeAdapter.createElement(token.tagName, ns, token.attrs, Object.create(null));
     p._adoptNodes(furthestBlock, newElement);
     p.treeAdapter.appendChild(furthestBlock, newElement);
     p.activeFormattingElements.insertElementAfterBookmark(newElement, token);

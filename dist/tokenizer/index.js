@@ -631,6 +631,7 @@ class Tokenizer {
                 break;
             }
             case 39 /* State.SELF_CLOSING_START_TAG */: {
+                debugger;
                 this._stateSelfClosingStartTag(cp);
                 break;
             }

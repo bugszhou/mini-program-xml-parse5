@@ -395,13 +395,13 @@ export class Parser<T extends TreeAdapterTypeMap> implements TokenHandler, Stack
     }
 
     _appendElement(token: TagToken, namespaceURI: NS): void {
-        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs);
+        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs, token);
 
         this._attachElementToTree(element, token.location);
     }
 
     _insertElement(token: TagToken, namespaceURI: NS): void {
-        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs);
+        const element = this.treeAdapter.createElement(token.tagName, namespaceURI, token.attrs, token);
 
         this._attachElementToTree(element, token.location);
         this.openElements.push(element, token.tagID);
@@ -415,7 +415,7 @@ export class Parser<T extends TreeAdapterTypeMap> implements TokenHandler, Stack
     }
 
     _insertTemplate(token: TagToken): void {
-        const tmpl = this.treeAdapter.createElement(token.tagName, NS.HTML, token.attrs);
+        const tmpl = this.treeAdapter.createElement(token.tagName, NS.HTML, token.attrs, token);
         const content = this.treeAdapter.createDocumentFragment();
 
         this.treeAdapter.setTemplateContent(tmpl, content);
@@ -1296,7 +1296,7 @@ function aaRecreateElementFromEntry<T extends TreeAdapterTypeMap>(
     elementEntry: ElementEntry<T>
 ): T['element'] {
     const ns = p.treeAdapter.getNamespaceURI(elementEntry.element);
-    const newElement = p.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs);
+    const newElement = p.treeAdapter.createElement(elementEntry.token.tagName, ns, elementEntry.token.attrs, elementEntry.token);
 
     p.openElements.replace(elementEntry.element, newElement);
     elementEntry.element = newElement;
@@ -1334,7 +1334,7 @@ function aaReplaceFormattingElement<T extends TreeAdapterTypeMap>(
 ): void {
     const ns = p.treeAdapter.getNamespaceURI(formattingElementEntry.element);
     const { token } = formattingElementEntry;
-    const newElement = p.treeAdapter.createElement(token.tagName, ns, token.attrs);
+    const newElement = p.treeAdapter.createElement(token.tagName, ns, token.attrs, Object.create(null));
 
     p._adoptNodes(furthestBlock, newElement);
     p.treeAdapter.appendChild(furthestBlock, newElement);
