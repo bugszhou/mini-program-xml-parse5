@@ -46,4 +46,3 @@ export declare function isSurrogatePair(cp: number): boolean;
 export declare function getSurrogatePairCodePoint(cp1: number, cp2: number): number;
 export declare function isControlCodePoint(cp: number): boolean;
 export declare function isUndefinedCodePoint(cp: number): boolean;
-//# sourceMappingURL=unicode.d.ts.map

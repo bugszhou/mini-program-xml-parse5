@@ -154,4 +154,3 @@ export declare class Parser<T extends TreeAdapterTypeMap> implements TokenHandle
     onWhitespaceCharacter(token: CharacterToken): void;
 }
 export {};
-//# sourceMappingURL=index.d.ts.map

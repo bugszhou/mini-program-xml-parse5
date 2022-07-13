@@ -245,4 +245,3 @@ export declare class Tokenizer {
     private _stateNumericCharacterReferenceEnd;
 }
 export {};
-//# sourceMappingURL=index.d.ts.map

@@ -285,4 +285,3 @@ export declare function getTagID(tagName: string): TAG_ID;
 export declare const SPECIAL_ELEMENTS: Record<NS, Set<TAG_ID>>;
 export declare function isNumberedHeader(tn: TAG_ID): boolean;
 export declare function hasUnescapedText(tn: string, scriptingEnabled: boolean): boolean;
-//# sourceMappingURL=html.d.ts.map

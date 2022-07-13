@@ -34,4 +34,3 @@ export declare class Preprocessor {
     private _checkForProblematicCharacters;
     retreat(count: number): void;
 }
-//# sourceMappingURL=preprocessor.d.ts.map

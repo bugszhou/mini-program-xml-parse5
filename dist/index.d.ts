@@ -57,4 +57,3 @@ export declare function parse<T extends TreeAdapterTypeMap = DefaultTreeAdapterM
  */
 export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(fragmentContext: T['parentNode'] | null, html: string, options: ParserOptions<T>): T['documentFragment'];
 export declare function parseFragment<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(html: string, options?: ParserOptions<T>): T['documentFragment'];
-//# sourceMappingURL=index.d.ts.map

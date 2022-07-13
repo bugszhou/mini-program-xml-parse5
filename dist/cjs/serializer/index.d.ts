@@ -1,12 +1,12 @@
-import type { TreeAdapter, TreeAdapterTypeMap } from '../tree-adapters/interface.js';
-import { type DefaultTreeAdapterMap } from '../tree-adapters/default.js';
+import type { TreeAdapter, TreeAdapterTypeMap } from "../tree-adapters/interface.js";
+import { type DefaultTreeAdapterMap } from "../tree-adapters/default.js";
 export interface SerializerOptions<T extends TreeAdapterTypeMap> {
     /**
      * Specifies input tree format.
      *
      * @default `treeAdapters.default`
      */
-    treeAdapter?: TreeAdapter<T>;
+    treeAdapter: Partial<TreeAdapter<T>>;
     /**
      * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
      * to `true`, `noscript` element content will not be escaped.
@@ -37,7 +37,7 @@ export interface SerializerOptions<T extends TreeAdapterTypeMap> {
  * @param node Node to serialize.
  * @param options Serialization options.
  */
-export declare function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['parentNode'], options?: SerializerOptions<T>): string;
+export declare function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T["parentNode"], options?: SerializerOptions<T>): string;
 /**
  * Serializes an AST element node to an HTML string, including the element node.
  *
@@ -57,5 +57,4 @@ export declare function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdap
  * @param node Node to serialize.
  * @param options Serialization options.
  */
-export declare function serializeOuter<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T['node'], options?: SerializerOptions<T>): string;
-//# sourceMappingURL=index.d.ts.map
+export declare function serializeOuter<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(node: T["node"], options?: SerializerOptions<T>): string;

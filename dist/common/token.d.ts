@@ -82,4 +82,3 @@ export interface CharacterToken extends TokenBase {
 }
 export declare type Token = DoctypeToken | TagToken | CommentToken | EOFToken | CharacterToken;
 export {};
-//# sourceMappingURL=token.d.ts.map

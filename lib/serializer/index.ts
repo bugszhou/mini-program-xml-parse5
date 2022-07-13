@@ -35,9 +35,9 @@ function isVoidElement<T extends TreeAdapterTypeMap>(
   options: InternalOptions<T>,
 ): boolean {
   return (
-    options.treeAdapter.isElementNode(node) &&
-    options.treeAdapter.getNamespaceURI(node) === NS.HTML &&
-    VOID_ELEMENTS.has(options.treeAdapter.getTagName(node))
+    options.treeAdapter.isElementNode!(node) &&
+    options.treeAdapter.getNamespaceURI!(node) === NS.HTML &&
+    VOID_ELEMENTS.has(options.treeAdapter.getTagName!(node))
   );
 }
 
@@ -47,7 +47,7 @@ export interface SerializerOptions<T extends TreeAdapterTypeMap> {
    *
    * @default `treeAdapters.default`
    */
-  treeAdapter?: TreeAdapter<T>;
+  treeAdapter: Partial<TreeAdapter<T>>;
   /**
    * The [scripting flag](https://html.spec.whatwg.org/multipage/parsing.html#scripting-flag). If set
    * to `true`, `noscript` element content will not be escaped.
@@ -92,7 +92,15 @@ export function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(
   node: T["parentNode"],
   options?: SerializerOptions<T>,
 ): string {
-  const opts = { ...defaultOpts, ...options } as InternalOptions<T>;
+  const defaultTreeAdapter = defaultOpts.treeAdapter;
+  const opts = {
+    ...defaultOpts,
+    ...options,
+    treeAdapter: {
+      ...defaultTreeAdapter,
+      ...(options?.treeAdapter ?? {}),
+    },
+  } as InternalOptions<T>;
 
   if (isVoidElement(node, opts)) {
     return "";
@@ -123,7 +131,15 @@ export function serialize<T extends TreeAdapterTypeMap = DefaultTreeAdapterMap>(
 export function serializeOuter<
   T extends TreeAdapterTypeMap = DefaultTreeAdapterMap,
 >(node: T["node"], options?: SerializerOptions<T>): string {
-  const opts = { ...defaultOpts, ...options } as InternalOptions<T>;
+  const defaultTreeAdapter = defaultOpts.treeAdapter;
+  const opts = {
+    ...defaultOpts,
+    ...options,
+    treeAdapter: {
+      ...defaultTreeAdapter,
+      ...(options?.treeAdapter ?? {}),
+    },
+  } as InternalOptions<T>;
   return serializeNode(node, opts);
 }
 
@@ -134,12 +150,12 @@ function serializeChildNodes<T extends TreeAdapterTypeMap>(
   let html = "";
   // Get container of the child nodes
   const container =
-    options.treeAdapter.isElementNode(parentNode) &&
-    options.treeAdapter.getTagName(parentNode) === $.TEMPLATE &&
-    options.treeAdapter.getNamespaceURI(parentNode) === NS.HTML
-      ? options.treeAdapter.getTemplateContent(parentNode)
+    options.treeAdapter?.isElementNode?.(parentNode) &&
+    options.treeAdapter?.getTagName?.(parentNode) === $.TEMPLATE &&
+    options.treeAdapter?.getNamespaceURI?.(parentNode) === NS.HTML
+      ? options.treeAdapter?.getTemplateContent?.(parentNode)
       : parentNode;
-  const childNodes = options.treeAdapter.getChildNodes(container);
+  const childNodes = options.treeAdapter?.getChildNodes?.(container);
 
   if (childNodes) {
     for (const currentNode of childNodes) {
@@ -154,16 +170,16 @@ function serializeNode<T extends TreeAdapterTypeMap>(
   node: T["node"],
   options: InternalOptions<T>,
 ): string {
-  if (options.treeAdapter.isElementNode(node)) {
+  if (options.treeAdapter.isElementNode!(node)) {
     return serializeElement(node, options);
   }
-  if (options.treeAdapter.isTextNode(node)) {
+  if (options.treeAdapter.isTextNode!(node)) {
     return serializeTextNode(node, options);
   }
-  if (options.treeAdapter.isCommentNode(node)) {
+  if (options.treeAdapter.isCommentNode!(node)) {
     return serializeCommentNode(node, options);
   }
-  if (options.treeAdapter.isDocumentTypeNode(node)) {
+  if (options.treeAdapter.isDocumentTypeNode!(node)) {
     return serializeDocumentTypeNode(node, options);
   }
   // Return an empty string for unknown nodes
@@ -174,7 +190,7 @@ function serializeElement<T extends TreeAdapterTypeMap>(
   node: T["element"],
   options: InternalOptions<T>,
 ): string {
-  const tn = options.treeAdapter.getTagName(node);
+  const tn = options.treeAdapter.getTagName?.(node);
 
   return `<${tn}${serializeAttributes(node, options)}>${
     isVoidElement(node, options)
@@ -188,7 +204,7 @@ function serializeAttributes<T extends TreeAdapterTypeMap>(
   { treeAdapter }: InternalOptions<T>,
 ): string {
   let html = "";
-  for (const attr of treeAdapter.getAttrList(node)) {
+  for (const attr of treeAdapter.getAttrList!(node)) {
     html += " ";
 
     if (!attr.namespace) {
@@ -227,7 +243,7 @@ function serializeTextNode<T extends TreeAdapterTypeMap>(
   options: InternalOptions<T>,
 ): string {
   const { treeAdapter } = options;
-  const content = treeAdapter.getTextNodeContent(node);
+  const content = treeAdapter.getTextNodeContent?.(node) ?? "";
 
   return content;
 }
@@ -236,12 +252,12 @@ function serializeCommentNode<T extends TreeAdapterTypeMap>(
   node: T["commentNode"],
   { treeAdapter }: InternalOptions<T>,
 ): string {
-  return `<!--${treeAdapter.getCommentNodeContent(node)}-->`;
+  return `<!--${treeAdapter?.getCommentNodeContent?.(node)}-->`;
 }
 
 function serializeDocumentTypeNode<T extends TreeAdapterTypeMap>(
   node: T["documentType"],
   { treeAdapter }: InternalOptions<T>,
 ): string {
-  return `<!DOCTYPE ${treeAdapter.getDocumentTypeNodeName(node)}>`;
+  return `<!DOCTYPE ${treeAdapter?.getDocumentTypeNodeName?.(node)}>`;
 }

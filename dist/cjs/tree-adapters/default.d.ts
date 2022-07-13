@@ -89,4 +89,3 @@ export declare type ChildNode = Element | Template | CommentNode | TextNode | Do
 export declare type Node = ParentNode | ChildNode;
 export declare type DefaultTreeAdapterMap = TreeAdapterTypeMap<Node, ParentNode, ChildNode, Document, DocumentFragment, Element, CommentNode, TextNode, Template, DocumentType>;
 export declare const defaultTreeAdapter: TreeAdapter<DefaultTreeAdapterMap>;
-//# sourceMappingURL=default.d.ts.map

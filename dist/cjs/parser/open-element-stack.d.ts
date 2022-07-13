@@ -50,4 +50,3 @@ export declare class OpenElementStack<T extends TreeAdapterTypeMap> {
     generateImpliedEndTagsThoroughly(): void;
     generateImpliedEndTagsWithExclusion(exclusionId: $): void;
 }
-//# sourceMappingURL=open-element-stack.d.ts.map

@@ -247,4 +247,3 @@ export interface TreeAdapter<T extends TreeAdapterTypeMap = TreeAdapterTypeMap> 
      */
     onItemPop?: (item: T['element'], newTop: T['parentNode']) => void;
 }
-//# sourceMappingURL=interface.d.ts.map
