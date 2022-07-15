@@ -1687,14 +1687,17 @@ function imageStartTagInBody(p, token) {
     areaStartTagInBody(p, token);
 }
 function textareaStartTagInBody(p, token) {
-    p._insertElement(token, html_js_1.NS.HTML);
+    // p._insertElement(token, NS.HTML);
     //NOTE: If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move
     //on to the next one. (Newlines at the start of textarea elements are ignored as an authoring convenience.)
-    p.skipNextNewLine = true;
-    p.tokenizer.state = index_js_1.TokenizerMode.RCDATA;
-    p.originalInsertionMode = p.insertionMode;
+    // p.skipNextNewLine = true;
+    // p.tokenizer.state = TokenizerMode.RCDATA;
+    // p.originalInsertionMode = p.insertionMode;
+    // p.framesetOk = false;
+    // p.insertionMode = InsertionMode.TEXT;
+    p._reconstructActiveFormattingElements();
+    p._insertElement(token, html_js_1.NS.HTML);
     p.framesetOk = false;
-    p.insertionMode = InsertionMode.TEXT;
 }
 function xmpStartTagInBody(p, token) {
     if (p.openElements.hasInButtonScope(html_js_1.TAG_ID.P)) {

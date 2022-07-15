@@ -1995,14 +1995,17 @@ function imageStartTagInBody<T extends TreeAdapterTypeMap>(p: Parser<T>, token: 
 }
 
 function textareaStartTagInBody<T extends TreeAdapterTypeMap>(p: Parser<T>, token: TagToken): void {
-    p._insertElement(token, NS.HTML);
+    // p._insertElement(token, NS.HTML);
     //NOTE: If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move
     //on to the next one. (Newlines at the start of textarea elements are ignored as an authoring convenience.)
-    p.skipNextNewLine = true;
-    p.tokenizer.state = TokenizerMode.RCDATA;
-    p.originalInsertionMode = p.insertionMode;
+    // p.skipNextNewLine = true;
+    // p.tokenizer.state = TokenizerMode.RCDATA;
+    // p.originalInsertionMode = p.insertionMode;
+    // p.framesetOk = false;
+    // p.insertionMode = InsertionMode.TEXT;
+    p._reconstructActiveFormattingElements();
+    p._insertElement(token, NS.HTML);
     p.framesetOk = false;
-    p.insertionMode = InsertionMode.TEXT;
 }
 
 function xmpStartTagInBody<T extends TreeAdapterTypeMap>(p: Parser<T>, token: TagToken): void {
